@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>{{ .title }}</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+          integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+          crossorigin=""/>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+            integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+            crossorigin=""></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/luxon@3.7.2/build/global/luxon.min.js" integrity="sha256-UWxf6lyCvfH7XEcrmq/cqc2m3IBrLBLOnWLC4Pw0gQQ=" crossorigin="anonymous"></script>
+
+    <style>
+        .map-container {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            height: auto;
+            width: 100%;
+        }
+
+        .toolset {
+            height: auto;
+            flex-grow: 1;
+            display: flex;
+        }
+
+        #map {
+            width: 100%;
+        }
+    </style>
+    <script>
+        function copyMapId(mapId) {
+            navigator.clipboard.writeText(mapId);
+        }
+    </script>
+
+</head>
+<body class=" bg-slate-100 p-2">
+<div id="header ">
+    <div class="flex justify-between items-baseline">
+        <div id="mapId" class="col-span-1 h-12"><h2 class="text-2xl"><a class="cursor-pointer hover:font-bold" title="Copy MapID" onclick="copyMapId('{{ .MapPublicId }}')">📋 Map {{ .MapPublicId }}</a></h2></div>
+        <div id="expire" class="col-span-5  h-12">⏳ Expire <span id="ttl">... fetching ...</span></div>
+    </div>
+</div>
+<div class="map-container">
+    <div class="toolset">
+        <div class="w-64 p-2" style="text-overflow: ellipsis;">
+            <h2 class="text-lg font-bold">Participants</h2>
+            <ul id="participants" class="list-none">
+            </ul>
+        </div>
+        <div data-publicid="{{ .MapPublicId }}" id="map">
+        </div>
+    </div>
+
+</div>
+<script defer src="/maps.js"></script>
+</body>
+</html>

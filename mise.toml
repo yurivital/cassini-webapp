@@ -1,0 +1,24 @@
+[tools]
+go = "latest"
+
+[tasks.server]
+run="go run main.go"
+dir="website"
+
+[tasks.lint]
+run="go fmt"
+dir="website"
+
+[tasks.test]
+run="go test"
+dir="website"
+
+[tasks.send-position]
+description="Send a test position for a map"
+usage = '''
+arg <mapid> help="Test file to run"
+'''
+run='''
+echo  ${usage_mapid}
+./send-position.sh ${usage_mapid}
+'''
