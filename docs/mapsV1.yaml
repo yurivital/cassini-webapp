@@ -1,0 +1,100 @@
+openapi: 3.1.1
+info:
+  title: Cassini API
+  version: 1.0.0
+  description: API for creating and sharing ephemeral maps.
+paths:
+  /api/v1/maps:
+    post:
+      description: Create a new map.
+      responses:
+        200:
+          description: Map created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MapResponse"
+  /api/v1/map/{publicId}:
+    get:
+      description: Get a map by its public ID.
+      parameters:
+        - name: publicId
+          in: path
+          required: true
+          description: The public ID of the map.
+          schema:
+            type: string
+      responses:
+        200:
+          description: Map retrieved successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MapResponse"
+  /api/v1/map/{publicId}/positions:
+    get:
+      description: Get all positions of a map by its public ID.
+      parameters:
+        - name: publicId
+          in: path
+          required: true
+          description: The public ID of the map.
+          schema:
+            type: string
+      responses:
+        200:
+          description: Positions retrieved successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  lastPositions:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/PositionResponse"
+  /api/v1/map/{publicId}/position:
+    put:
+      description: Push a new location for a participant
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PositionResponse"
+      responses:
+        200:
+          description: Position pushed successfully.
+        400:
+          description: Invalid request body. Nickname, timestamp, or location are missing.
+components:
+  schemas:
+    MapResponse:
+      type: object
+      properties:
+        publicId:
+          type: string
+          description: The ID of the map.
+        expire:
+          type: number
+          description: The expiration date and time of the map in seconds since the Unix epoch.
+    PositionResponse:
+      type: object
+      properties:
+        nickname:
+          type: string
+          description: The nickname of a participant
+        latitude:
+          type: number
+          description: The latitude of a participant
+        longitude:
+          type: number
+          description: The longitude of a participant
+        timestamp:
+          type: number
+          description: The timestamp of the location measurement for a participant
+
+
+
+
+
